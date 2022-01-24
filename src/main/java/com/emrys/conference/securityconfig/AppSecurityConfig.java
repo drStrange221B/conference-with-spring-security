@@ -36,7 +36,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception{
-//        auth.jdbcAuthentication().dataSource(datasource);
 
         auth.ldapAuthentication()
                 .userDnPatterns("uid={0},ou=people")
