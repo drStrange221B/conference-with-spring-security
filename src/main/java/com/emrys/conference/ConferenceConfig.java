@@ -23,8 +23,6 @@ public class ConferenceConfig implements WebMvcConfigurer {
 //        registry.addViewController("greeting");
     }
 
-
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/files/**")

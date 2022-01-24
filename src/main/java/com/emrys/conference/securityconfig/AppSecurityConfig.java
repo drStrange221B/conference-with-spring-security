@@ -36,7 +36,17 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception{
-        auth.jdbcAuthentication().dataSource(datasource);
+//        auth.jdbcAuthentication().dataSource(datasource);
+
+        auth.ldapAuthentication()
+                .userDnPatterns("uid={0},ou=people")
+                .groupSearchBase("ou=groups")
+                .contextSource()
+                .url("ldap://localhost:8389/dc=emrys,dc=com")
+                .and()
+                .passwordCompare()
+                .passwordEncoder(passwordEncoder())
+                .passwordAttribute("userPassword");
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
