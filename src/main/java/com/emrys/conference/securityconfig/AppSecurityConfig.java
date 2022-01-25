@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -32,11 +35,36 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/assets/css/**", "assets/js/**", "/images/**").permitAll()
                 .antMatchers("/index*").permitAll()
                 .anyRequest().authenticated()
+
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/perform")
-                .defaultSuccessUrl("/", true);
+                .failureUrl("/login?error=true")
+                .permitAll()
+                .defaultSuccessUrl("/", true)
+
+                .and()
+                .rememberMe()
+                .key("superSecretKey")
+                .tokenRepository(tokenRepoository())
+
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login?logout=true")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/perform","GET"))
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+                //.logoutUrl("logout")
+        ;
+    }
+
+    @Bean
+    public PersistentTokenRepository tokenRepoository(){
+        JdbcTokenRepositoryImpl token = new JdbcTokenRepositoryImpl();
+        token.setDataSource(datasource);
+        return token;
     }
 
     @Override
