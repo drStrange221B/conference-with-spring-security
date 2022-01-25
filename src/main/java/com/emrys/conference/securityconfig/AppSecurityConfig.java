@@ -1,5 +1,7 @@
 package com.emrys.conference.securityconfig;
 
+import com.emrys.conference.model.ConferenceUserDetails;
+import com.emrys.conference.service.ConferenceUserDetailsContextMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,9 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private ConferenceUserDetailsContextMapper ctxMapper;
 
     @Autowired
     private DataSource datasource;
@@ -45,7 +50,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .passwordCompare()
                 .passwordEncoder(passwordEncoder())
-                .passwordAttribute("userPassword");
+                .passwordAttribute("userPassword")
+                .and()
+                .userDetailsContextMapper(ctxMapper);
+        ;
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

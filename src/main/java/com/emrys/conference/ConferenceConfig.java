@@ -1,7 +1,9 @@
 package com.emrys.conference;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,10 +14,14 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.sql.DataSource;
 import java.util.Locale;
 
 @Configuration
 public class ConferenceConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private DataSource dataSource;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -55,5 +61,10 @@ public class ConferenceConfig implements WebMvcConfigurer {
         bean.setSuffix(".jsp");
         bean.setOrder(0);
         return bean;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(){
+     return new JdbcTemplate(dataSource);
     }
 }
