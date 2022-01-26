@@ -34,6 +34,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login**").permitAll()
                 .antMatchers("/assets/css/**", "assets/js/**", "/images/**").permitAll()
                 .antMatchers("/index*").permitAll()
+                .antMatchers("/account*").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
@@ -70,6 +71,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception{
 
+        auth.jdbcAuthentication()
+                .dataSource(datasource)
+                .passwordEncoder(passwordEncoder());
+
+        /*
         auth.ldapAuthentication()
                 .userDnPatterns("uid={0},ou=people")
                 .groupSearchBase("ou=groups")
@@ -81,7 +87,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordAttribute("userPassword")
                 .and()
                 .userDetailsContextMapper(ctxMapper);
-        ;
+        */
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
