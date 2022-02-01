@@ -34,7 +34,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login**").permitAll()
                 .antMatchers("/assets/css/**", "assets/js/**", "/images/**").permitAll()
                 .antMatchers("/index*").permitAll()
+                .antMatchers("/password*").permitAll()
                 .antMatchers("/account*").permitAll()
+                .antMatchers("/resetPassword*").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

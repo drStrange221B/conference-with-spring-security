@@ -2,6 +2,7 @@ package com.emrys.conference.repositories;
 
 import com.emrys.conference.model.Account;
 import com.emrys.conference.model.ConferenceUserDetails;
+import com.emrys.conference.model.Password;
 import com.emrys.conference.model.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Iterator;
 
 @Repository
@@ -25,6 +25,27 @@ public class AccountRepositoryImpl implements AccountRepository{
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public Account getAccountByUsernameAndEmail(String username, String email) {
+
+        System.out.println("############# " + email + "################");
+        System.out.println("############# " + username + "################");
+        Account account = jdbcTemplate.queryForObject("SELECT username, firstname, lastname, password, email from accounts" +
+                " where username=? and email=?", new RowMapper<Account>() {
+            @Override
+            public Account mapRow(ResultSet resultSet, int i) throws SQLException {
+                Account account1 = new Account();
+                account1.setUsername(resultSet.getString("username"));
+                account1.setFirstName(resultSet.getString("firstname"));
+                account1.setLastName(resultSet.getString("lastname"));
+                account1.setPassword(resultSet.getString("password"));
+                account1.setEmail(resultSet.getString("email"));
+                return account1;
+            }
+        }, username, email);
+        return account;
+    }
 
     @Override
     public Account create(Account account) {
@@ -102,7 +123,19 @@ public class AccountRepositoryImpl implements AccountRepository{
     }
 
     @Override
-    public void deleteToken(Account account) {
-        jdbcTemplate.update("DELETE from verification_tokens where username=?", account.getUsername());
+    public void deleteToken(String token) {
+                jdbcTemplate.update("DELETE from verification_tokens where token=?", token);
     }
+
+    @Override
+    public void updateAccount(Password password) {
+        jdbcTemplate.update("UPDATE accounts SET password=? where username=?", password.getPassword(),password.getUsername());
+    }
+
+    @Override
+    public void updateUserDetails(ConferenceUserDetails user) {
+        jdbcTemplate.update("UPDATE users SET password=? where username=?", user.getPassword(), user.getUsername());
+    }
+
+
 }

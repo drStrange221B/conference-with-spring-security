@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <title>Login</title>
+    <title>Account Confirmed</title>
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
@@ -37,31 +37,15 @@
 </nav>
 
 <div class="container">
-    <div>
-        <h1>Login</h1>
-    </div>
-
-    <c:if test="${not empty param.logout}">
-    <div class="alert alert-success" role="alert">
-        Logout was successful!
-        </div>
-    </c:if>
-
-    <div class="error"> <c:if test="${not empty param.error}" >Invalid username and password.</c:if>
+    <div class = "alert alert-success" role = "alert">
+        Your password has been updated !.
     </div>
 
 
-    <form:form action="perform" method="post">
-        <form:errors path="*" cssClass="errorblock" element="div" />
-        <div><label> User Name : <input type="text" name="username"/> </label></div>
-        <div><label> Password: <input type="password" name="password"/> </label></div>
-        <div><label>Remember Me: <input type="checkbox" name="remember-me"></label></div>
-        <input type="submit" class="btn btn-lg btn-primary" role="button" value="Login"/>
-        <a href = "password">Forgot Password</a>
-    </form:form>
 
 
-<div class="control-group">
+
+    <div class="control-group">
     </div>
 </div>
 </body>

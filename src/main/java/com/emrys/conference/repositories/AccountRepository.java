@@ -2,10 +2,12 @@ package com.emrys.conference.repositories;
 
 import com.emrys.conference.model.Account;
 import com.emrys.conference.model.ConferenceUserDetails;
+import com.emrys.conference.model.Password;
 import com.emrys.conference.model.VerificationToken;
-import com.emrys.conference.service.AccountService;
 
 public interface AccountRepository {
+
+    Account getAccountByUsernameAndEmail(String username, String email);
 
     Account create(Account account);
 
@@ -21,5 +23,9 @@ public interface AccountRepository {
 
     void deleteAccount(Account account);
 
-    void deleteToken(Account account);
+    void deleteToken(String token);
+
+    void updateAccount(Password password);
+
+    void updateUserDetails(ConferenceUserDetails user);
 }

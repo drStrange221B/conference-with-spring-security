@@ -3,6 +3,7 @@ package com.emrys.conference.util;
 import com.emrys.conference.model.Account;
 import com.emrys.conference.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,7 +14,8 @@ import java.util.UUID;
 @Component
 public class AccountListener implements ApplicationListener<OnCreateAccountEvent> {
 
-    private String serverUrl = "http://localhost:8080/";
+    @Value("${serverUrl}")
+    private String serverUrl;
 
     @Autowired
     private AccountService accountService;
@@ -47,6 +49,9 @@ public class AccountListener implements ApplicationListener<OnCreateAccountEvent
         email.setText(message + serverUrl + confirmationUrl);
 
         mailSender.send(email);
+
+
+        System.out.println("\n\n############################################################\n\n");
 
     }
 }
