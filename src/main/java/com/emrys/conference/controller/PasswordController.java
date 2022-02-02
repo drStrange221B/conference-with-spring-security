@@ -1,6 +1,5 @@
 package com.emrys.conference.controller;
 
-import com.emrys.conference.async.AsyncPublisher;
 import com.emrys.conference.model.Account;
 import com.emrys.conference.model.Password;
 import com.emrys.conference.model.VerificationToken;
@@ -25,9 +24,6 @@ public class PasswordController {
     
     @Autowired
     private AccountService accountService;
-
-    @Autowired
-    private AsyncPublisher asyncPublisher;
 
     @GetMapping("password")
     public String getPasswordReset(@ModelAttribute("password")Password password){

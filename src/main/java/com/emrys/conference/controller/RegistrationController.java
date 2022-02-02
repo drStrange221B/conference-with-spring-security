@@ -1,6 +1,10 @@
 package com.emrys.conference.controller;
 
 import com.emrys.conference.model.Registration;
+
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +22,13 @@ public class RegistrationController {
     }
 
     @PostMapping("registration")
+//    @Secured("ROLE_ADMIN")
     public String addRegistration(@Valid @ModelAttribute ("registration")
                                               Registration registration,
-                                  BindingResult result) {
+                                  BindingResult result, Authentication auth) {
+
+
+       System.out.println("check the use : " + auth.getAuthorities() );
 
         if(result.hasErrors()) {
             System.out.println("There were errors");
